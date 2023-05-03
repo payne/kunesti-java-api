@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{conversations.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{conversations.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/conversationss/add}" th:text="#{conversations.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='conversations')}" />
+            <div th:if="${conversationss.empty}" th:text="#{conversations.list.empty}" />
+            <div th:if="${!conversationss.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{conversations.id.label}" scope="col" />
+                            <th th:text="#{conversations.event.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="conversations : ${conversationss}">
+                            <td th:text="${conversations.id}" />
+                            <td th:text="${conversations.event}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/conversationss/edit/{id}(id=${conversations.id})}" th:text="#{conversations.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/conversationss/delete/{id}(id=${conversations.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{conversations.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>

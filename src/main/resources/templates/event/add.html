@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{event.add.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{event.add.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/events}" th:text="#{event.add.back}" class="btn btn-secondary" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('event')}" />
+            <form th:action="${T(pub.kunesti.util.WebUtils).getRequest().requestURI}" method="post">
+                <div th:replace="~{fragments/forms::inputRow(object='event', field='title')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='event', field='description', type='textarea')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='event', field='startTime', inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='event', field='location')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='event', field='rsvpRequired', type='checkbox')}" />
+                <input type="submit" th:value="#{event.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

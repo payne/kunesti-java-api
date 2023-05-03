@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{users.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{users.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/userss/add}" th:text="#{users.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:replace="~{fragments/utils::searchFilter(object='users')}" />
+            <div th:if="${userss.empty}" th:text="#{users.list.empty}" />
+            <div th:if="${!userss.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{users.id.label}" scope="col" />
+                            <th th:text="#{users.userName.label}" scope="col" />
+                            <th th:text="#{users.email.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="users : ${userss}">
+                            <td th:text="${users.id}" />
+                            <td th:text="${users.userName}" />
+                            <td th:text="${users.email}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/userss/edit/{id}(id=${users.id})}" th:text="#{users.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/userss/delete/{id}(id=${users.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{users.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="~{fragments/utils::pagination()}" />
+        </div>
+    </body>
+</html>
